@@ -45,7 +45,7 @@ function populateVoices() {
     voicesDropdown.innerHTML = voices
         .map((voice) => {
             return `
-                <option value="${voice.name}">
+                <option value="${voice}">
                     ${voice.name} (${voice.lang})
                 </option>
             `;
@@ -59,11 +59,8 @@ speechSynthesis.addEventListener(
 ); 
 speakButton.addEventListener("click",()=>{
 const msg = new SpeechSynthesisUtterance(text.value);
-	const selectedVoice = voices.find((voice) => {
-        return voice.name === voicesDropdown.value;
-    });
-
-    msg.voice = selectedVoice;
+	
+    msg.voice = voicesDropdown.value;
 	msg.pitch=pitch.value;
 	msg.rate=rate.value;
 	speechSynthesis.speak(msg);	
