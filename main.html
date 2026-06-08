@@ -17,11 +17,11 @@
       </select>
 
       <label for="rate">Rate:</label>
-      <input name="rate" type="range" min="0" max="3" value="1" step="0.1">
+      <input id="rate" name="rate" type="range" min="0" max="3" value="1" step="0.1">
 
       <label for="pitch">Pitch:</label>
 
-      <input name="pitch" type="range" min="0" max="2" step="0.1">
+      <input id="pitch" name="pitch" type="range" min="0" max="2" step="0.1">
       <textarea name="text">Hello! I love JavaScript 👍</textarea>
       <button id="stop">Stop!</button>
       <button id="speak">Speak</button>
@@ -29,12 +29,42 @@
     </div>
 
 <script>
-  const msg = new SpeechSynthesisUtterance();
-  let voices = [];
+
   const voicesDropdown = document.querySelector('[name="voice"]');
   const options = document.querySelectorAll('[type="range"], [name="text"]');
   const speakButton = document.querySelector('#speak');
   const stopButton = document.querySelector('#stop');
+const rate=document.querySelector("#rate");
+	const pitch=document.querySelector("#pitch");
+	const text = document.querySelector('[name="text"]');
+	
+function populateVoices() {
+
+    voices = speechSynthesis.getVoices();
+
+    voicesDropdown.innerHTML = voices
+        .map((voice) => {
+            return `
+                <option value="${voice.name}">
+                    ${voice.name} (${voice.lang})
+                </option>
+            `;
+        })
+        .join("");
+}
+
+speechSynthesis.addEventListener(
+    "voiceschanged",
+    populateVoices
+); 
+speakButton.addEventListener("click",()=>{
+const msg = new SpeechSynthesisUtterance(text.value);
+	msg.voice=voicesDropdown.value;
+	msg.pitch=pitch.value;
+	msg.rate=rate.value;
+	speechSynthesis.speak(msg);	
+})
+	
 
   //Your code goes here
 </script>
