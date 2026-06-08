@@ -37,7 +37,7 @@
 const rate=document.querySelector("#rate");
 	const pitch=document.querySelector("#pitch");
 	const text = document.querySelector('[name="text"]');
-	
+	let voices = [];
 function populateVoices() {
 
     voices = speechSynthesis.getVoices();
@@ -59,7 +59,11 @@ speechSynthesis.addEventListener(
 ); 
 speakButton.addEventListener("click",()=>{
 const msg = new SpeechSynthesisUtterance(text.value);
-	msg.voice=voicesDropdown.value;
+	const selectedVoice = voices.find((voice) => {
+        return voice.name === voicesDropdown.value;
+    });
+
+    msg.voice = selectedVoice;
 	msg.pitch=pitch.value;
 	msg.rate=rate.value;
 	speechSynthesis.speak(msg);	
